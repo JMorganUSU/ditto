@@ -4,6 +4,8 @@ from builtins import super, range, zip, round, map
 
 import warnings
 from traitlets.traitlets import (
+    ObserveHandler,
+    deprecated_method,
     _CallbackWrapper,
     EventHandler,
 )
