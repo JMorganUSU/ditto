@@ -1030,7 +1030,10 @@ class Reader(AbstractReader):
             "zerosequencereactance": 8,
             "configuration": 9,
         }
-        mapp_sub = {"id": 0, "mva": 1, "kvll": 6, "conn": 14}
+        mapp_sub = {
+            "id": 0, "mva": 1, "kvll": 6, "connection": 20, "firstlevelr1": 8, "firstlevelx1": 9, 
+            "firstlevelr0": 10,
+            "firstlevelx0": 11}
 
         sources = {}
         subs = {}
@@ -1078,7 +1081,7 @@ class Reader(AbstractReader):
         for line in self.content:
             subs.update(
                 self.parser_helper(
-                    line, ["substation"], ["id", "mva", "kvll", "conn"], mapp_sub
+                    line, ["substation"], ["id", "mva", "kvll", "connection", "firstlevelr1", "firstlevelx1", "firstlevelr0", "firstlevelx0"], mapp_sub
                 )
             )
         if len(sources.items()) == 0:
@@ -1200,7 +1203,7 @@ class Reader(AbstractReader):
                             )
                         else:
                             api_source.nominal_voltage = (
-                                float(source_equivalent_data["voltage"]) * 10 ** 3
+                                float(subs[sid]["kvll"]) * 10 ** 3
                             )
                     except:
                         pass
@@ -1234,8 +1237,8 @@ class Reader(AbstractReader):
                         )
                     else:
                         api_source.positive_sequence_impedance = complex(
-                            float(source_equivalent_data["firstlevelr1"]),
-                            float(source_equivalent_data["firstlevelx1"]),
+                            float(subs[sid]["firstlevelr1"]),
+                            float(subs[sid]["firstlevelx1"]),
                         )
                     # except:
                     # pass
@@ -1246,8 +1249,8 @@ class Reader(AbstractReader):
                         )
                     else:
                         api_source.zero_sequence_impedance = complex(
-                            float(source_equivalent_data["firstlevelr0"]),
-                            float(source_equivalent_data["firstlevelx0"]),
+                            float(subs[sid]["firstlevelr0"]),
+                            float(subs[sid]["firstlevelx0"]),
                         )
 
 
