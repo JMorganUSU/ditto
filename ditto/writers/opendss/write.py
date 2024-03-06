@@ -2278,10 +2278,7 @@ class Writer(AbstractWriter):
                             kvs = " kvs=("
                             for w, winding in enumerate(i.windings):
                                 if hasattr(i.windings[w], "nominal_voltage"):
-                                    kvs += (
-                                        str(i.windings[w].nominal_voltage * 10**-3)
-                                        + ", "
-                                    )
+                                    kvs += str(i.windings[w].nominal_voltage) + ", "
                                     if (
                                         not substation_name + "_" + feeder_name
                                         in self._baseKV_feeders_
@@ -2293,24 +2290,16 @@ class Writer(AbstractWriter):
                                         i.windings[w].nominal_voltage < 300
                                     ):  # Line-Neutral voltage for 120 V
                                         self._baseKV_.add(
-                                            i.windings[w].nominal_voltage
-                                            * math.sqrt(3)
-                                            * 10**-3
+                                            i.windings[w].nominal_voltage * math.sqrt(3)
                                         )
                                         self._baseKV_feeders_[
                                             substation_name + "_" + feeder_name
-                                        ].add(
-                                            winding.nominal_voltage
-                                            * math.sqrt(3)
-                                            * 10**-3
-                                        )
+                                        ].add(winding.nominal_voltage * math.sqrt(3))
                                     else:
-                                        self._baseKV_.add(
-                                            i.windings[w].nominal_voltage * 10**-3
-                                        )
+                                        self._baseKV_.add(i.windings[w].nominal_voltage)
                                         self._baseKV_feeders_[
                                             substation_name + "_" + feeder_name
-                                        ].add(winding.nominal_voltage * 10**-3)
+                                        ].add(winding.nominal_voltage)
 
                             kvs = kvs[:-2]
                             kvs += ")"
@@ -2555,6 +2544,11 @@ class Writer(AbstractWriter):
                     self.files_to_redirect.append(
                         os.path.join(
                             output_redirect, self.output_filenames["regulators"]
+                        )
+                    )
+                    self.files_to_redirect.append(
+                        os.path.join(
+                            output_redirect, self.output_filenames["transformers"]
                         )
                     )
 
